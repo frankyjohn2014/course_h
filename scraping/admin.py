@@ -8,13 +8,22 @@ class VideoRes(resources.ModelResource):
 
     class Meta:
         model = Post_video
-        fields = ('id','videos')
+        fields = ('id','title','videos')
 
 class VideoLinks(ImportExportModelAdmin):
         resource_class = VideoRes
 
+class CategoryRes(resources.ModelResource):
 
-admin.site.register(Category)
+    class Meta:
+        model = Category
+        fields = ('name')
+
+class Categorys(ImportExportModelAdmin):
+        resource_class = CategoryRes
+
+
+admin.site.register(Category,Categorys)
 admin.site.register(Language)
 admin.site.register(Post)
 admin.site.register(Error)

@@ -8,7 +8,8 @@ from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 # import geckodriver_autoinstaller
 import ast
-
+import csv
+from itertools import zip_longest
 
 def get_html(site):
 # https://curl.trillworks.com/
@@ -50,17 +51,25 @@ def get_page_data(html):                         #sources
         i = 0
         f = 1
         '''В массиве 1 title , в два link'''
+        name = []
         urls = []
         while True:
             
             try:
-                # print(dic[i].split(': ')[1].strip('"'))
-                # print(dic[f].split(': ')[1].strip('"'))
-                ras = dic[f].split(': ')[1].strip('"')
-                urls.append(ras)
-                handle = codecs.open('333.csv','w')
-                handle.writelines(str(urls))
-                handle.close
+                ras = dic[i].split(': ')[1].strip('"')
+                dva = dic[f].split(': ')[1].strip('"')
+                name.append(ras)
+                urls.append(dva)
+                d = [name, urls]
+                export_data = zip_longest(*d, fillvalue = '')
+                # handle = codecs.open('333.csv','w')
+                # handle.writelines(str(urls))
+                # handle.close
+                with open('numbers.csv', 'w', encoding="ISO-8859-1", newline='') as myfile:
+                    wr = csv.writer(myfile)
+                    wr.writerow(("title", "videos"))
+                    wr.writerows(export_data)
+                myfile.close()
                 i += 4
                 f += 4
             except:
