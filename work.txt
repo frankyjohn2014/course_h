@@ -1,0 +1,82 @@
+
+      var myPlayer;
+            function onPlay(event) {
+        if (event.type === "play") {
+          var time = parseInt(myPlayer.api("time"));
+          var currentTrack = parseInt(myPlayer.api("playlist_id").replace('x-', ''));
+          saveTime("3473", "51983", currentTrack, time);
+        }
+      }
+
+      document.getElementById("player").addEventListener("play", onPlay);
+
+      function saveTime(courseId, userId, currentTrack, currentSeek) {
+        if (typeof fetch === 'function') {
+          fetch('/api/history', {
+            method: 'post',
+            body: JSON.stringify({
+              course_id: courseId,
+              user_id: userId,
+              current_track: currentTrack,
+              current_seek: currentSeek
+            }),
+            headers: new Headers({
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer ' + Cookies.get("accessToken")
+            }),
+          })
+            .then(function (response) {
+              return response.json();
+            })
+            .then(function (data) {
+              // console.log(data,'data');
+            })
+            .catch(function (error) {
+              console.error(error);
+            });
+        }
+      }
+      
+      myPlayer = new Playerjs({
+        id: "player",
+        // file: [{"title": "Серия1", "file": "https://plrjs.com/sample.mp4"}, {"title": "Серия2", "file": "https://plrjs.com/sample.mp4"}],
+        file: [
+                    {"title": "1) Welcome | 00:01:03", "file": "https://vss4.coursehunter.net/s/8f889049d42ed8140914167e800e0ed4/wesbos-gatsbytt/lesson1.mp4", "subtitle": "", "id": "c3473l1"},
+                    {"title": "2) Tooling and Starter File Setup | 00:13:18", "file": "https://vss4.coursehunter.net/s/8f2e880e14097e80d80e491490165e5e/wesbos-gatsbytt/lesson2.mp4", "subtitle": "", "id": "c3473l2"},
+                    {"title": "3) What is Gatsby? Why is it so awesome? | 00:09:04", "file": https://vss4.coursehunter.net/s/8f889049db2ed8140914167e800e0edb/wesbos-gatsbytt/lesson3.mp4"", "subtitle": "", "id": "c3473l3"},
+                    {"title": "4) Pages in Gatsby | 00:11:18", "file": "https://vss4.coursehunter.net/s/8f2e491688d809900e7e80148f140e8f/wesbos-gatsbytt/lesson4.mp4", "subtitle": "", "id": "c3473l4"},
+                    {"title": "5) Routing and Navigation in Gatsby | 00:10:57", "file": "https://vss4.coursehunter.net/s/8f7e4990141688d80a802e0e09140e0a/wesbos-gatsbytt/lesson5.mp4", "subtitle": "", "id": "c3473l5"},
+                    {"title": "6) Creating Layouts in Gatsby | 00:17:35", "file": "https://vss4.coursehunter.net/s/8f889049db2ed8140914167e800e0edb/wesbos-gatsbytt/lesson6.mp4", "subtitle": "", "id": "c3473l6"},
+                    {"title": "7) Global Styles | 00:14:32", "file": "https://vss4.coursehunter.net/s/8f14499014d809887e162e490e0e8049/wesbos-gatsbytt/lesson7.mp4", "subtitle": "", "id": "c3473l7"},
+                    {"title": "8) Typography | 00:03:16", "file": "https://vss4.coursehunter.net/s/8f090e497e16881490d80e802e148080/wesbos-gatsbytt/lesson8.mp4", "subtitle": "", "id": "c3473l8"},
+                    {"title": "9) Styling the Nav and Logo | 00:17:15", "file": "https://vss4.coursehunter.net/s/8fd8160e940e14497e092e8014908894/wesbos-gatsbytt/lesson9.mp4", "subtitle": "", "id": "c3473l9"},
+                    {"title": "10) Styling our Layout | 00:12:04", "file": "https://vss4.coursehunter.net/s/8f490e9009147e161488d80e802eacac/wesbos-gatsbytt/lesson10.mp4", "subtitle": "", "id": "c3473l10"},
+                    {"title": "11) Setting up our Headless CMS | 00:15:34", "file": "https://vss4.coursehunter.net/s/8f2e491688d809900e7e801484140e84/wesbos-gatsbytt/lesson11.mp4", "subtitle": "", "id": "c3473l11"},
+                    {"title": "12) Creating the Toppings Content Type and custom previews | 00:11:05", "file": "https://vss4.coursehunter.net/s/8f147e80880990140e49d82e2e0e162e/wesbos-gatsbytt/lesson12.mp4", "subtitle": "", "id": "c3473l12"},
+                    {"title": "13) Creating Data Relationships | 00:16:03", "file": "https://vss4.coursehunter.net/s/8f887e090e2ed80e9016348049141434/wesbos-gatsbytt/lesson13.mp4", "subtitle": "", "id": "c3473l13"},
+                    {"title": "14) Creating our Person Data Type | 00:04:17", "file": "https://vss4.coursehunter.net/s/8f490e9009147e161488d80e802ea5a5/wesbos-gatsbytt/lesson14.mp4", "subtitle": "", "id": "c3473l14"},
+                    {"title": "15) Custom CMS Inputs in Sanity | 00:17:38", "file": "https://vss4.coursehunter.net/s/8f0e800ed8147e099016142e49b288b2/wesbos-gatsbytt/lesson15.mp4", "subtitle": "", "id": "c3473l15"},
+                    {"title": "16) An intro to gatsby-config and sourcing data | 00:08:32", "file": "https://vss4.coursehunter.net/s/8f889049df2ed8140914167e800e0edf/wesbos-gatsbytt/lesson16.mp4", "subtitle": "", "id": "c3473l16"},
+                    {"title": "17) Sourcing Sanity Data and GraphQL Introduction | 00:19:33", "file": "https://vss4.coursehunter.net/s/8f2e880e14097e80d80e491490165d5d/wesbos-gatsbytt/lesson17.mp4", "subtitle": "", "id": "c3473l17"},
+                    {"title": "18) Learning Gatsby Queries | 00:24:08", "file": "https://vss4.coursehunter.net/s/8f490e9009147e161488d80e802ea3a3/wesbos-gatsbytt/lesson18.mp4", "subtitle": "", "id": "c3473l18"},
+                    {"title": "19) Gatsby Images | 00:13:03", "file": "https://vss4.coursehunter.net/s/8f2e491688d809900e7e801481140e81/wesbos-gatsbytt/lesson19.mp4", "subtitle": "", "id": "c3473l19"},
+                    {"title": "20) Loading in Sample Data | 00:04:57", "file": "https://vss4.coursehunter.net/s/8f6b907e0e2e801488d8490e1416096b/wesbos-gatsbytt/lesson20.mp4", "subtitle": "", "id": "c3473l20"},
+                    {"title": "21) Styling our Pizza Grid with CSS subgrid | 00:08:05", "file": "https://vss4.coursehunter.net/s/8f0e800ed8147e099016142e49b488b4/wesbos-gatsbytt/lesson21.mp4", "subtitle": "", "id": "c3473l21"},
+                    {"title": "22) Static Queries and Building the Toppings Filter | 00:26:07", "file": "https://vss4.coursehunter.net/s/8f2e491688d809900e7e801482140e82/wesbos-gatsbytt/lesson22.mp4", "subtitle": "", "id": "c3473l22"},
+                    {"title": "23) Dynamically creating pages with gatsby-node | 00:22:42", "file": "https://vss4.coursehunter.net/s/8f147e80880990140e49d82e250e1625/wesbos-gatsbytt/lesson23.mp4", "subtitle": "", "id": "c3473l23"},
+                    {"title": "24) Templating and Styling our Single Pizza Page | 00:04:45", "file": "https://vss4.coursehunter.net/s/8f2e880e14097e80d80e491490165f5f/wesbos-gatsbytt/lesson24.mp4", "subtitle": "", "id": "c3473l24"},
+                    {"title": "25) Dynamically Creating Toppings Pages | 00:22:38", "file": "https://vss4.coursehunter.net/s/8f2e880e14097e80d80e491490165b5b/wesbos-gatsbytt/lesson25.mp4", "subtitle": "", "id": "c3473l25"},
+                    {"title": "26) Sourcing Data from an external API | 00:14:32", "file": "https://vss4.coursehunter.net/s/8fd8160e7e2e094980ca0e88141490ca/wesbos-gatsbytt/lesson26.mp4", "subtitle": "", "id": "c3473l26"},
+                    {"title": "27) Querying, Displaying and Styling the Beers Page | 00:12:00", "file": "https://vss4.coursehunter.net/s/8f490e9009147e161488d80e802eaaaa/wesbos-gatsbytt/lesson27.mp4", "subtitle": "", "id": "c3473l27"},
+                    {"title": "28) Querying and Displaying Pagination | 00:13:07", "file": "https://vss4.coursehunter.net/s/8fd8160e7e2e094980cc0e88141490cc/wesbos-gatsbytt/lesson28.mp4", "subtitle": "", "id": "c3473l28"},
+                    {"title": "29) Paginating Data in Gatsby | 00:16:22", "file": "https://vss4.coursehunter.net/s/8fe909147e161488d849800e2e0e90e9/wesbos-gatsbytt/lesson29.mp4", "subtitle": "", "id": "c3473l29"},
+                    {"title": "30) Filtering the data based on Pagination | 00:03:53", "file": "https://vss4.coursehunter.net/s/8fe509147e161488d849800e2e0e90e5/wesbos-gatsbytt/lesson30.mp4", "subtitle": "", "id": "c3473l30"},
+                    {"title": "31) Creating a reusable Pagination Component | 00:20:25", "file": "https://vss4.coursehunter.net/s/8f090e497e16881490d80e802e147272/wesbos-gatsbytt/lesson31.mp4", "subtitle": "", "id": "c3473l31"},
+                    {"title": "32) Single Slicemaster Pages | 00:08:33", "file": "https://vss4.coursehunter.net/s/8fd8160e7e2e094980cd0e88141490cd/wesbos-gatsbytt/lesson32.mp4", "subtitle": "", "id": "c3473l32"},
+                    {"title": "33) Gatsby SEO and Head Tags | 00:26:21", "file": "https://vss4.coursehunter.net/s/8fd8160e950e14497e092e8014908895/wesbos-gatsbytt/lesson33.mp4", "subtitle": "", "id": "c3473l33"},
+                    {"title": "34) Creating the Order page with Custom Hooks | 00:28:37", "file": "https://vss4.coursehunter.net/s/8f0e800ed8147e099016142e49b188b1/wesbos-gatsbytt/lesson34.mp4", "subtitle": "", "id": "c3473l34"},
+                    {"title": "35) Styling our Order Form | 00:09:58", "file": "https://vss4.coursehunter.net/s/8f14429014d809887e162e490e0e8042/wesbos-gatsbytt/lesson35.mp4", "subtitle": "", "id": "c3473l35"},
+                    {"title": "36) Custom Hook for our Order Form | 00:18:56", "file": "https://vss4.coursehunter.net/s/8f0e800ed8147e099016142e49b588b5/wesbos-gatsbytt/lesson36.mp4", "subtitle": "", "id": "c3473l36"},
+                    {"title": "37) Calculating our Order Total | 00:06:16", "file": "https://vss4.coursehunter.net/s/8f490e9009147e161488d80e802eabab/wesbos-gatsbytt/lesson37.mp4", "subtitle": "", "id": "c3473l37"},
+                    {"title": "38) Moving our Order State to React Context with a custom Provider | 00:13:54", "file": "https://vss4.coursehunter.net/s/8f490e9009147e161488d80e802ea3a3/wesbos-gatsbytt/lesson38.mp4", "subtitle": "", "id": "c3473l38"},
+                    {"title": "39) An Intro to Serverless Functions | 00:16:26", "file": "https://vss4.coursehunter.net/s/8f2e880e14097e80d80e491490165e5e/wesbos-gatsbytt/lesson39.mp4", "subtitle": "", "id": "…

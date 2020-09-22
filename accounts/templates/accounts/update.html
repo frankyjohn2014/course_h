@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+
+{% block title %}
+    Registration
+{% endblock title %}
+    
+
+{% block content %}
+
+<div class="row">
+  <div class="col-md-8 mx-auto">
+    <h4 class="my-2">Настройки</h4>
+    <form method="POST" action="">
+        {% csrf_token %}
+      <div class="form-group">
+        {{ form.as_p }}
+      </div>
+      <button type="submit" class="btn btn-primary">Сохранить</button>
+    </form>
+    <form method="POST" action="{% url 'accounts:delete' %}">
+        {% csrf_token %}
+      <button type="submit" class="btn btn-danger my-3">Удалить</button>
+      <p>
+        <h6>Если вашей вакансии нет, вы можете её предложить добавить администратору</h6>
+        <button class="btn btn-success" type="button" data-toggle="collapse" data-target="#collapsed" aria-expanded="false" aria-controls="collapseExample">
+          Показать форму 
+        </button>
+      </p>
+      
+      <div class="collapse" id="collapsed">
+        <div class="card card-body">
+          <div class="row my-5">
+            <div class="col-md-8 mx-auto">
+
+              <h6 class="my-2">Если вы не нашли подходящий набор Город, Специальность, 
+                Вы можете заполнить форму ниже с Вашими пожеланиями. После того,
+                как необходимые данные будут добавлены, Вы получите письмо на указанный Вам email
+              </h6>
+              <form method="POST" action="{% url 'accounts:contact' %}">
+                  {% csrf_token %}
+                <div class="form-group">
+                  {{ contact_form.as_p }}
+                </div>
+                <button type="submit" class="btn btn-primary">Отправить</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}
