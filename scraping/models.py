@@ -41,13 +41,21 @@ class Language(models.Model):
 
 class Post(models.Model):
     title = models.CharField(max_length=250,verbose_name='Заголовок поста')
+    descr_post =  models.CharField(max_length=500,verbose_name='Описание поста')
+    time_videos = models.CharField(max_length=250,verbose_name='Время видеоо')
+    quantity_videos = models.CharField(max_length=250,verbose_name='Количество видео')
+    time_add = models.CharField(max_length=250,verbose_name='Время добавления')
+    language_videos = models.CharField(max_length=250,verbose_name='Язык видео')
+    picture_post = models.URLField(unique=True, blank=True, null=True)
+    timestamp = models.DateField(auto_now_add=True)
     # url = models.URLField(unique=True)
     # company = models.CharField(max_length=250,verbose_name='Компания')
     # description = models.TextField(verbose_name='Описание курса')
-    category = models.ForeignKey('Category', on_delete=models.CASCADE, verbose_name='Категория')
-    language = models.ForeignKey('Language', on_delete=models.CASCADE, verbose_name='Язык программирования')
-    # post_video = models.ManyToManyField(Post_video)
-    timestamp = models.DateField(auto_now_add=True)
+    # category = models.ForeignKey('Category', on_delete=models.CASCADE, verbose_name='Категория')
+    # language = models.ForeignKey('Language', on_delete=models.CASCADE, verbose_name='Язык программирования')
+    # # post_video = models.ManyToManyField(Post_video)
+
+
     class Meta:
         verbose_name = 'Пост'
         verbose_name_plural = 'Посты'
@@ -60,7 +68,6 @@ class Post_video(models.Model):
     title = models.CharField(max_length=300,verbose_name='Название видео', blank=True, null=True)
     videos = models.URLField(unique=True, blank=True, null=True)
     posts = models.ForeignKey('Post', on_delete=models.CASCADE, verbose_name='Пост', blank=True, null=True)
-    category1 = models.ForeignKey('Category', on_delete=models.CASCADE, verbose_name='Категория')
     class Meta:
         verbose_name = 'Ссылка видео'
         verbose_name_plural = 'Ссылки видео'

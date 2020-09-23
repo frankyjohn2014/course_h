@@ -23,9 +23,19 @@ class Categorys(ImportExportModelAdmin):
         resource_class = CategoryRes
 
 
+class PostRes(resources.ModelResource):
+
+    class Meta:
+        model = Post
+        fields = ('id','title','descr_post','time_videos','quantity_videos','time_add','language_videos','picture_post')
+
+class Posts(ImportExportModelAdmin):
+        resource_class = PostRes
+
+
 admin.site.register(Category,Categorys)
 admin.site.register(Language)
-admin.site.register(Post)
+admin.site.register(Post,Posts)
 admin.site.register(Error)
 admin.site.register(Post_video, VideoLinks)
 # admin.site.register(Url)

@@ -37,10 +37,45 @@ def get_html(site):
     r = requests.get(site, headers=headers, data=data)
     return r.text
 
-def get_page_data(html):                         #sources
+def get_page_data(html):
+    count_1 = 1    
+    name_post_m  = [] 
+    descr_post_m = []
+    time_videos_m = [] 
+    quantity_videos_m  = []   
+    time_add_m  = [] 
+    language_videos_m = [] 
+    picture_post_m = []  
+          #sources
     soup = BeautifulSoup(html, 'lxml')           #(format_in, parser)
     script = soup.find_all('script')[2]
+
+    name_post = soup.find('p',class_='hero-description').text
+    descr_post = soup.find('div',class_='course-description').text
+    time_videos = soup.find_all('div',class_='course-box-value')[0].text
+    quantity_videos = soup.find_all('div',class_='course-box-value')[1].text
+    time_add = soup.find_all('div',class_='course-box-value')[2].text
+    language_videos = soup.find_all('div',class_='course-box-value')[3].text
+    picture_post = soup.find('img',class_='course-img')['src']
+
+    name_post_m.append(name_post)
+    descr_post_m.append(descr_post)
+    time_videos_m.append(time_videos)
+    quantity_videos_m.append(quantity_videos)
+    time_add_m.append(time_add)
+    language_videos_m.append(language_videos)
+    picture_post_m.append(picture_post)
+
+    d = [name_post_m, descr_post_m, time_videos_m, quantity_videos_m, time_add_m, language_videos_m, picture_post_m]
+    export_data = zip_longest(*d, fillvalue = '')
+    with open('numbers2.csv', 'w', encoding="utf-8", newline='') as myfile:
+        wr = csv.writer(myfile)
+        wr.writerow(("title", "descr_post", "time_videos","quantity_videos", "time_add", "language_videos", "picture_post"))
+        wr.writerows(export_data)
+        count_1 += 1
+    myfile.close()
     dic = []
+    
     for i in script:
         s = i.find('"title": "1')
         file_x = i[s-1:]
@@ -53,21 +88,24 @@ def get_page_data(html):                         #sources
         '''В массиве 1 title , в два link'''
         name = []
         urls = []
+        id_videos_post = []
         while True:
             
             try:
                 ras = dic[i].split(': ')[1].strip('"')
                 dva = dic[f].split(': ')[1].strip('"')
+                three = count
                 name.append(ras)
                 urls.append(dva)
-                d = [name, urls]
+                id_videos_post.append(count_1)
+                d = [id_videos_post, name, urls]
                 export_data = zip_longest(*d, fillvalue = '')
                 # handle = codecs.open('333.csv','w')
                 # handle.writelines(str(urls))
                 # handle.close
-                with open('numbers.csv', 'w', encoding="ISO-8859-1", newline='') as myfile:
+                with open('numbers12.csv', 'w', encoding="utf-8", newline='') as myfile:
                     wr = csv.writer(myfile)
-                    wr.writerow(("title", "videos"))
+                    wr.writerow(("id","title", "videos"))
                     wr.writerows(export_data)
                 myfile.close()
                 i += 4
@@ -83,8 +121,14 @@ def main():
         clear_data1 = clear_data.strip('[ ]')
         clear_data2 = clear_data1.split(',')
         ''' Вставить перебор для получения всех ссылок текущего урока'''
-        print(clear_data2[1])
-        get_page_data(get_html(clear_data2[1]))
+        count = 0
+        while True:
+            try:
+                get_page_data(get_html(clear_data2[count]))
+                print(clear_data2[count])
+                count +=1
+            except:
+                break
 
 if __name__ == '__main__':
     main()
