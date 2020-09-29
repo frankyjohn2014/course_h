@@ -8,7 +8,7 @@ class VideoRes(resources.ModelResource):
 
     class Meta:
         model = Post_video
-        fields = ('id','title','videos')
+        fields = ('id','posts','title','videos')
 
 class VideoLinks(ImportExportModelAdmin):
         resource_class = VideoRes

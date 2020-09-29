@@ -36,18 +36,17 @@ def get_html(site):
 
     r = requests.get(site, headers=headers, data=data)
     return r.text
+def get_page_data(html,count):
 
-def get_page_data(html):
-    count_1 = 1    
-    name_post_m  = [] 
+    name_post_m  = []
     descr_post_m = []
-    time_videos_m = [] 
-    quantity_videos_m  = []   
-    time_add_m  = [] 
+    time_videos_m = []
+    quantity_videos_m = []
+    time_add_m = []
     language_videos_m = [] 
-    picture_post_m = []  
-          #sources
-    soup = BeautifulSoup(html, 'lxml')           #(format_in, parser)
+    picture_post_m = []
+
+    soup = BeautifulSoup(html, 'lxml') #(format_in, parser)
     script = soup.find_all('script')[2]
 
     name_post = soup.find('p',class_='hero-description').text
@@ -68,14 +67,15 @@ def get_page_data(html):
 
     d = [name_post_m, descr_post_m, time_videos_m, quantity_videos_m, time_add_m, language_videos_m, picture_post_m]
     export_data = zip_longest(*d, fillvalue = '')
-    with open('numbers2.csv', 'w', encoding="utf-8", newline='') as myfile:
+    '''Делаем запись модели Пост для экспорта'''
+    with open('posts.csv', 'a+', encoding="utf-8", newline='') as myfile:
         wr = csv.writer(myfile)
-        wr.writerow(("title", "descr_post", "time_videos","quantity_videos", "time_add", "language_videos", "picture_post"))
+        # wr.writerow(("title", "descr_post", "time_videos","quantity_videos", "time_add", "language_videos", "picture_post"))
         wr.writerows(export_data)
-        count_1 += 1
-    myfile.close()
+
+        myfile.close()
     dic = []
-    
+
     for i in script:
         s = i.find('"title": "1')
         file_x = i[s-1:]
@@ -83,52 +83,70 @@ def get_page_data(html):
         for o in spli_x:
             z = o.lstrip()
             dic.append(z)
-        i = 0
-        f = 1
-        '''В массиве 1 title , в два link'''
-        name = []
-        urls = []
-        id_videos_post = []
-        while True:
+    get_csv(dic,count)
+
+def get_csv(dic,count):
+    i = 0
+    f = 1
+    while True:
+        try:
+            '''В массиве 1 title , в два link'''
+            name = []
+            urls = []
+            posts_id = []
+            ras = dic[i].split(': ')[1].strip('"')
+            dva = dic[f].split(': ')[1].strip('"')
+            i += 4
+            f += 4
+            print(i)
+            print(ras)
+            name.append(ras)
+            urls.append(dva)
+            posts_id.append(count+1)
+            d = [posts_id,posts_id, name, urls]
+            export_data2 = zip_longest(*d, fillvalue = '')
+            '''save videos link'''
+
+            with open('links.csv', 'a+', encoding="utf-8", newline='') as myfile:
+                wr = csv.writer(myfile)
             
-            try:
-                ras = dic[i].split(': ')[1].strip('"')
-                dva = dic[f].split(': ')[1].strip('"')
-                three = count
-                name.append(ras)
-                urls.append(dva)
-                id_videos_post.append(count_1)
-                d = [id_videos_post, name, urls]
-                export_data = zip_longest(*d, fillvalue = '')
-                # handle = codecs.open('333.csv','w')
-                # handle.writelines(str(urls))
-                # handle.close
-                with open('numbers12.csv', 'w', encoding="utf-8", newline='') as myfile:
-                    wr = csv.writer(myfile)
-                    wr.writerow(("id","title", "videos"))
-                    wr.writerows(export_data)
+                wr.writerows(export_data2)
                 myfile.close()
-                i += 4
-                f += 4
-            except:
-                break
+        except:
+            print('break')
+            break
+
 
 def main():
     with open("1.html", "r") as read_file:
+        print('test')
         ss = {}
         data = read_file.read()
-        clear_data=data.replace('\'', '')
+        clear_data = data.replace('\'', '')
         clear_data1 = clear_data.strip('[ ]')
         clear_data2 = clear_data1.split(',')
-        ''' Вставить перебор для получения всех ссылок текущего урока'''
+        '''Вставить перебор для получения всех ссылок текущего урока'''
         count = 0
-        while True:
+        while count < 4:
             try:
-                get_page_data(get_html(clear_data2[count]))
+                get_page_data(get_html(clear_data2[count]), count)
                 print(clear_data2[count])
                 count +=1
             except:
                 break
 
 if __name__ == '__main__':
+    with open('posts.csv', 'a+', encoding="utf-8", newline='') as myfile:
+        wr = csv.writer(myfile)
+        wr.writerow(("title", "descr_post", "time_videos","quantity_videos", "time_add", "language_videos", "picture_post"))
+    with open('links.csv', 'a+', encoding="utf-8", newline='') as myfile:
+        wr = csv.writer(myfile)
+        wr.writerow(("id","posts","title", "videos"))
     main()
+
+# with open('numbers5.csv', 'a+', encoding="utf-8", newline='') as myfile:
+#     wr = csv.writer(myfile)
+#     wr.writerow(("title", "descr_post", "time_videos","quantity_videos", "time_add", "language_videos", "picture_post"))
+# with open('numbers123.csv', 'a+', encoding="utf-8", newline='') as myfile:
+#     wr = csv.writer(myfile)
+#     wr.writerow(("id","title", "videos"))
