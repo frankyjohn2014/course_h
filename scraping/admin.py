@@ -27,7 +27,7 @@ class PostRes(resources.ModelResource):
 
     class Meta:
         model = Post
-        fields = ('id','title','descr_post','time_videos','quantity_videos','time_add','language_videos','picture_post')
+        fields = ('id','title','descr_post','time_videos','quantity_videos','time_add','language_videos','picture_post','desc_large','site')
 
 class Posts(ImportExportModelAdmin):
         resource_class = PostRes

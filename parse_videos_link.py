@@ -36,7 +36,7 @@ def get_html(site):
 
     r = requests.get(site, headers=headers, data=data)
     return r.text
-def get_page_data(html,count):
+def get_page_data(html,count,site):
 
     name_post_m  = []
     descr_post_m = []
@@ -45,10 +45,13 @@ def get_page_data(html,count):
     time_add_m = []
     language_videos_m = [] 
     picture_post_m = []
+    desc_large_m = []
+    site_m = []
 
     soup = BeautifulSoup(html, 'lxml') #(format_in, parser)
     script = soup.find_all('script')[2]
 
+    '''Парсим наименования поста'''
     name_post = soup.find('p',class_='hero-description').text
     descr_post = soup.find('div',class_='course-description').text
     time_videos = soup.find_all('div',class_='course-box-value')[0].text
@@ -56,7 +59,8 @@ def get_page_data(html,count):
     time_add = soup.find_all('div',class_='course-box-value')[2].text
     language_videos = soup.find_all('div',class_='course-box-value')[3].text
     picture_post = soup.find('img',class_='course-img')['src']
-
+    desc_large = soup.find('div', class_='course-wrap-description').text
+    '''Сохраняем в словарь'''
     name_post_m.append(name_post)
     descr_post_m.append(descr_post)
     time_videos_m.append(time_videos)
@@ -64,18 +68,18 @@ def get_page_data(html,count):
     time_add_m.append(time_add)
     language_videos_m.append(language_videos)
     picture_post_m.append(picture_post)
-
-    d = [name_post_m, descr_post_m, time_videos_m, quantity_videos_m, time_add_m, language_videos_m, picture_post_m]
+    desc_large_m.append(desc_large)
+    site_m.append(site)
+    d = [name_post_m, descr_post_m, time_videos_m, quantity_videos_m, time_add_m, language_videos_m, picture_post_m,desc_large_m,site_m]
     export_data = zip_longest(*d, fillvalue = '')
     '''Делаем запись модели Пост для экспорта'''
-    with open('posts.csv', 'a+', encoding="utf-8", newline='') as myfile:
+    with open('csv/posts.csv', 'a+', encoding="utf-8", newline='') as myfile:
         wr = csv.writer(myfile)
-        # wr.writerow(("title", "descr_post", "time_videos","quantity_videos", "time_add", "language_videos", "picture_post"))
         wr.writerows(export_data)
-
         myfile.close()
-    dic = []
 
+    '''Ищем нужный скрипт и достаём title:'''
+    dic = []
     for i in script:
         s = i.find('"title": "1')
         file_x = i[s-1:]
@@ -83,70 +87,71 @@ def get_page_data(html,count):
         for o in spli_x:
             z = o.lstrip()
             dic.append(z)
+
+    '''Вызываем функцию сохранения csv ссылок'''
     get_csv(dic,count)
 
 def get_csv(dic,count):
     i = 0
-    f = 1
+
     while True:
+        name = []
+        urls = []
+        posts_id = []
         try:
             '''В массиве 1 title , в два link'''
-            name = []
-            urls = []
-            posts_id = []
-            ras = dic[i].split(': ')[1].strip('"')
-            dva = dic[f].split(': ')[1].strip('"')
-            i += 4
-            f += 4
-            print(i)
-            print(ras)
-            name.append(ras)
-            urls.append(dva)
+            all_video = [s for s in dic if "mp4" in s]
+            all_video_title = [s for s in dic if "|" in s]
+
+            try:
+                all_video_m = all_video[i].split(': ')[1].strip('"')
+                all_video_title_m = all_video_title[i].split(': ')[1].strip('"')
+            except:
+                all_video_title_m = all_video_title[i]
+            i += 1
+            name.append(all_video_title_m)
+            urls.append(all_video_m)
             posts_id.append(count+1)
-            d = [posts_id,posts_id, name, urls]
+            d = [posts_id, name, urls]
             export_data2 = zip_longest(*d, fillvalue = '')
             '''save videos link'''
 
-            with open('links.csv', 'a+', encoding="utf-8", newline='') as myfile:
+            with open('csv/links.csv', 'a+', encoding="utf-8", newline='') as myfile:
                 wr = csv.writer(myfile)
-            
                 wr.writerows(export_data2)
                 myfile.close()
         except:
             print('break')
             break
 
-
+def title_csv():
+    '''Создаём заголовки в csv'''
+    with open('csv/posts.csv', 'a+', encoding="utf-8", newline='') as myfile:
+        wr = csv.writer(myfile)
+        wr.writerow(("title", "descr_post", "time_videos","quantity_videos", "time_add", "language_videos", "picture_post","desc_large","site"))
+        myfile.close()
+    with open('csv/links.csv', 'a+', encoding="utf-8", newline='') as myfile:
+        wr = csv.writer(myfile)
+        wr.writerow(("posts","title", "videos"))
+        myfile.close()
 def main():
     with open("1.html", "r") as read_file:
         print('test')
-        ss = {}
         data = read_file.read()
         clear_data = data.replace('\'', '')
         clear_data1 = clear_data.strip('[ ]')
         clear_data2 = clear_data1.split(',')
         '''Вставить перебор для получения всех ссылок текущего урока'''
         count = 0
-        while count < 4:
+        while True:
             try:
-                get_page_data(get_html(clear_data2[count]), count)
+                get_page_data(get_html(clear_data2[count]), count, clear_data2[count])
                 print(clear_data2[count])
                 count +=1
             except:
                 break
 
+        
 if __name__ == '__main__':
-    with open('posts.csv', 'a+', encoding="utf-8", newline='') as myfile:
-        wr = csv.writer(myfile)
-        wr.writerow(("title", "descr_post", "time_videos","quantity_videos", "time_add", "language_videos", "picture_post"))
-    with open('links.csv', 'a+', encoding="utf-8", newline='') as myfile:
-        wr = csv.writer(myfile)
-        wr.writerow(("id","posts","title", "videos"))
+    title_csv()
     main()
-
-# with open('numbers5.csv', 'a+', encoding="utf-8", newline='') as myfile:
-#     wr = csv.writer(myfile)
-#     wr.writerow(("title", "descr_post", "time_videos","quantity_videos", "time_add", "language_videos", "picture_post"))
-# with open('numbers123.csv', 'a+', encoding="utf-8", newline='') as myfile:
-#     wr = csv.writer(myfile)
-#     wr.writerow(("id","title", "videos"))

@@ -1,0 +1,19 @@
+<div class="footer-menu-title">Категории</div>
+<a class="footer-menu-item footer-menu-item-semi-blod" href="https://coursehunter.net/categories">Все категории</a>
+<a class="footer-menu-item" href="https://coursehunter.net/graphic">Graphic</a>
+<a class="footer-menu-item" href="https://coursehunter.net/frontend/css">CSS</a>
+<a class="footer-menu-item" href="https://coursehunter.net/frontend/javascript">JavaScript</a>
+<a class="footer-menu-item" href="https://coursehunter.net/frontend/vue">Vue</a>
+<a class="footer-menu-item" href="https://coursehunter.net/frontend/reactjs">React.js</a>
+<a class="footer-menu-item" href="https://coursehunter.net/backend/python">Python</a>
+<a class="footer-menu-item" href="https://coursehunter.net/backend/java">Java</a>
+<a class="footer-menu-item" href="https://coursehunter.net/backend/nodejs">Node.js</a>
+<a class="footer-menu-item" href="https://coursehunter.net/testirovanie-quality-assurance-qa">Тестирование / Quality Assurance (QA)</a>
+<a class="footer-menu-item" href="https://coursehunter.net/drugoe">Другое</a>
+
+
+<span class="ml-15">
+                  <a href="https://dls2.coursehunter.net/s/8fec0914f91e1488d867800e2e89e0ec/rjvm-cats.zip" title="Download course materials" class="btn mb-15 mr-10"><i class="icon-download"></i>Скачать Курс</a>
+        <a href="https://vss4.coursehunter.net/rjvm-cats/code.zip" title="Download course materials" class="btn mb-15 mr-10"><i class="icon-download"></i>Материалы к курсу</a>
+  
+            </span>

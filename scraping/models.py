@@ -48,6 +48,8 @@ class Post(models.Model):
     language_videos = models.CharField(max_length=250,verbose_name='Язык видео')
     picture_post = models.URLField(unique=True, blank=True, null=True)
     timestamp = models.DateField(auto_now_add=True)
+    desc_large = models.TextField(verbose_name='Большое описание')
+    site = models.URLField(unique=True, blank=True, null=True)
     # url = models.URLField(unique=True)
     # company = models.CharField(max_length=250,verbose_name='Компания')
     # description = models.TextField(verbose_name='Описание курса')
