@@ -9,12 +9,28 @@
 
 {% block content %}
 <div class="card my-3">
-    <h5 class="card-header"><a href="{{ obj.url }}">{{ object.title }}</a></h5>
+    <h5 class="card-header">{{ object.title }}</h5>
     <div class="card-body">
       <p class="card-text">{{ object.description }}</p>
-      <p>{{ object.company }}</p>
+      <p>{{object.picture_post}}</p>
+      <p>{{object.time_videos}}</p>
+      <p>{{object.quantity_videos}}</p>
+      <p>{{object.time_add}}</p>
+      <p>{{object.language_videos}}</p>
+      
+      <p>{{object.site}}</p>
       <p>{{object.category.name}} | {{ object.language.name }} | <small>{{object.timestamp|date:"d-m-Y" }}</small></p>
     </div>
-  </div>
+    <!-- title = models.CharField(max_length=250,verbose_name='Заголовок поста')
+    descr_post =  models.CharField(max_length=500,verbose_name='Описание поста')
+    time_videos = models.CharField(max_length=250,verbose_name='Время видеоо')
+    quantity_videos = models.CharField(max_length=250,verbose_name='Количество видео')
+    time_add = models.CharField(max_length=250,verbose_name='Время добавления')
+    language_videos = models.CharField(max_length=250,verbose_name='Язык видео')
+    picture_post = models.URLField(unique=True, blank=True, null=True)
+    timestamp = models.DateField(auto_now_add=True)
+    desc_large = models.TextField(verbose_name='Большое описание')
+    site = models.URLField(unique=True, blank=True, null=True) -->
+</div>
 {% endblock content %}
     

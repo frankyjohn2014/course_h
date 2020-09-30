@@ -15,15 +15,15 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path,include
-from scraping.views import home_view,list_view,DView,VList, VCreate,VUpdate,VDelete
+from scraping.views import VList,DView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', home_view, name='home'),
-    path('list/', VList.as_view(), name='list'),
-    path('accounts/',include('accounts.urls'), name='accounts'),
+    # path('', home_view, name='home'),
+    path('', VList.as_view(), name='home'),
+    # path('accounts/',include('accounts.urls'), name='accounts'),
     path('detail/<int:pk>/', DView.as_view(), name='detail'),
-    path('create/', VCreate.as_view(), name='create'),
-    path('update/<int:pk>', VUpdate.as_view(), name='update'),
-    path('delete/<int:pk>', VDelete.as_view(), name='delete'),
+    # path('create/', VCreate.as_view(), name='create'),
+    # path('update/<int:pk>', VUpdate.as_view(), name='update'),
+    # path('delete/<int:pk>', VDelete.as_view(), name='delete'),
 ]

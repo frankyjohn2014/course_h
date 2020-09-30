@@ -66,27 +66,27 @@ def delete_view(request):
 
     return redirect('home')
 
-def contact(request):
-    if request.method == 'POST':
-        contact_form = ContactForm(request.POST or None)
-        if contact_form.is_valid():
-            data = contact_form.cleaned_data
-            category = data.get('category')
-            language = data.get('language')
-            email = data.get('email')
-            qs = Error.objects.filter(timestamp=dt.date.today())
-            if qs.exists:
-                err = qs.first()
-                data = err.data.get('user_data',[])
-                data.append({'category': category,'language':language,'email':email})
-                err.data['user_data'] = data
-                err.save()
-            else:
-                data = [{'category': category,'language':language,'email':email}]
-                Error(data=f"user_data:{data}").save()
-            messages.success(request,'Данные отправлены администрации')
-            return redirect('accounts:update')
-        else:
-            return redirect('accounts:update')
-    else:
-        return redirect('accounts:login')
+# def contact(request):
+#     if request.method == 'POST':
+#         contact_form = ContactForm(request.POST or None)
+#         if contact_form.is_valid():
+#             data = contact_form.cleaned_data
+#             category = data.get('category')
+#             language = data.get('language')
+#             email = data.get('email')
+#             qs = Error.objects.filter(timestamp=dt.date.today())
+#             if qs.exists:
+#                 err = qs.first()
+#                 data = err.data.get('user_data',[])
+#                 data.append({'category': category,'language':language,'email':email})
+#                 err.data['user_data'] = data
+#                 err.save()
+#             else:
+#                 data = [{'category': category,'language':language,'email':email}]
+#                 Error(data=f"user_data:{data}").save()
+#             messages.success(request,'Данные отправлены администрации')
+#             return redirect('accounts:update')
+#         else:
+#             return redirect('accounts:update')
+#     else:
+#         return redirect('accounts:login')

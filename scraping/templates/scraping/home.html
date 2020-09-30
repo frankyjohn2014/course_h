@@ -11,12 +11,94 @@
 <div class="row">
   <div class="col-md-8 mx-auto">
     <h4 class="my-2">Курсы про программированию</h4>
-    <form method="GET" action="{% url 'list' %}">
-      <div class="form-group">
-        {{ form.as_p }}
+    {% for post in object_list %}
+    <!-- title = models.CharField(max_length=250,verbose_name='Заголовок поста')
+    descr_post =  models.CharField(max_length=500,verbose_name='Описание поста')
+    time_videos = models.CharField(max_length=250,verbose_name='Время видеоо')
+    quantity_videos = models.CharField(max_length=250,verbose_name='Количество видео')
+    time_add = models.CharField(max_length=250,verbose_name='Время добавления')
+    language_videos = models.CharField(max_length=250,verbose_name='Язык видео')
+    picture_post = models.URLField(unique=True, blank=True, null=True)
+    timestamp = models.DateField(auto_now_add=True)
+    desc_large = models.TextField(verbose_name='Большое описание')
+    site = models.URLField(unique=True, blank=True, null=True) -->
+      <section class="standard">
+      <div class="container">
+      <div class="course-list mb-25">
+      <div class="course-list">
+      <article class="course" data-bookmark="" data-name="{{post.title}}">
+      <div class="course-side course-side-1">
+      <picture class="course-figure" data-link="{% url 'detail' pk=post.id %}">
+      <img src="{{post.picture_post}}" alt="{{post}}" class="course-img" onerror="this.src='/images/no-logo.svg'" loading="lazy" decoding="async">
+      </picture>
+      <div class="course-description-wrap">
+      <h3 class="course-primary-name" title="Создание веб-приложений с помощью Vue 3" data-link="{% url 'detail' pk=post.id %}">{{post.title}}</h3>
+      <div class="course-secondary-name" title="Оригинальное название">Building Web Applications with Vue 3</div>
+      <div class="course-description">{{post.descr_post}}</div>
+      <div class="course-info">
+      <div class="course-duration">
+      <i class="icon-time"></i>
+      <span>{{post.time_videos}}</span>
       </div>
-      <button type="submit" class="btn btn-primary">Submit</button>
-    </form>
+      <div class="course-lessons">
+      <i class="icon-lesson"></i>
+      <span>{{post.quantity_videos}}</span>
+      </div>
+      <div class="course-lang">
+      <i class="icon-language"></i>
+      <span>{{post.language_videos}}</span>
+      </div>
+      <div class="course-lessons">
+      <i class="icon-source"></i>
+      </div>
+      </div>
+      </div>
+      <div class="course-side course-side-2 course-details">
+      <div class="course-details-top">
+      <div class="course-rating" title="Total votes 3">
+      <span class="course-rating-item"><i class="icon-star-full"></i></span>
+      <span class="course-rating-item"><i class="icon-star-full"></i></span>
+      <span class="course-rating-item"><i class="icon-star-full"></i></span>
+      <span class="course-rating-item"><i class="icon-star-full"></i></span>
+      <span class="course-rating-item"><i class="icon-star-full"></i></span>
+      </div>
+
+      <div class="course-details-name">{{post.title}}</div>
+      <div class="course-details-item course-details-item-rating">
+      <div class="course-details-label">Голосов:</div>
+      <div class="course-details-value">3 | 3/0</div>
+      </div>
+          <div class="course-details-item">
+      <div class="course-details-label">Язык:</div>
+      <div class="course-details-value">{{post.language_videos}}</div>
+      </div>
+                  <div class="course-details-item">
+      <div class="course-details-label">Источник:</div>
+      <div class="course-details-value">
+      </div>
+      </div>
+                  <div class="course-details-item">
+      <div class="course-details-label">Дата добавления:</div>
+      <div class="course-details-value"> {{post.time_add}} </div>
+      </div>
+                  <div class="course-details-item">
+      <div class="course-details-label">Дата выхода:</div>
+      <div class="course-details-value"> {{post.time_add}} </div>
+      </div>
+      </div>
+      <div class="course-details-bottom">
+      <a href="{% url 'detail' pk=post.id %}" class="course-btn btn" title="Посмотреть">Посмотреть</a>
+      <button class="course-action course-action-bookmark mr-5" data-course-id="3490" data-user-id="51983" aria-label="Добавить в закладки" title="Добавить в закладки">
+        <i class="icon-heart"></i>
+      </button>
+      </div>
+      </div>
+      </article>
+      </div>
+      </div>
+      </div>
+      </section>
+    {% endfor %}
   </div>
 </div>
 
