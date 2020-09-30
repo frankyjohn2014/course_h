@@ -60,6 +60,8 @@ def get_page_data(html,count,site):
     language_videos = soup.find_all('div',class_='course-box-value')[3].text
     picture_post = soup.find('img',class_='course-img')['src']
     desc_large = soup.find('div', class_='course-wrap-description').text
+    detail_text = soup.find('div', class_='course-wrap-description course-wrap-description-opened')
+
     '''Сохраняем в словарь'''
     name_post_m.append(name_post)
     descr_post_m.append(descr_post)
