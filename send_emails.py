@@ -92,5 +92,5 @@ if urls_err:
 
 if subject:
     msg = EmailMultiAlternatives(subject, text_content, from_email, [to])
-    msg.attach_alternative(_html, "text/html")
+    # msg.attach_alternative(_html, "text/html")
     msg.send()

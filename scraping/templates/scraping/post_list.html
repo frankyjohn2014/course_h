@@ -1,10 +1,16 @@
 {% extends 'base.html' %}
 
+
+{% block title %}
+
+    
+{% endblock title %}
+
 {% block content %}
 <div class="row">
   <div class="col" >
     <h2 class="text-center my-3">
-      Course Hunter
+      Результаты поиска:
     </h2>
   </div>
 </div>
@@ -58,20 +64,20 @@
       <div class="course-details-label">Голосов:</div>
       <div class="course-details-value">3 | 3/0</div>
       </div>
-      <div class="course-details-item">
+          <div class="course-details-item">
       <div class="course-details-label">Язык:</div>
       <div class="course-details-value">{{post.language_videos}}</div>
       </div>
-      <div class="course-details-item">
+                  <div class="course-details-item">
       <div class="course-details-label">Источник:</div>
       <div class="course-details-value">
       </div>
       </div>
-      <div class="course-details-item">
+                  <div class="course-details-item">
       <div class="course-details-label">Дата добавления:</div>
       <div class="course-details-value"> {{post.time_add}} </div>
       </div>
-      <div class="course-details-item">
+                  <div class="course-details-item">
       <div class="course-details-label">Дата выхода:</div>
       <div class="course-details-value"> {{post.time_add}} </div>
       </div>
@@ -91,4 +97,5 @@
     {% endfor %}
   </div>
 </div>
+
 {% endblock %}

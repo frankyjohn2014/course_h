@@ -11,7 +11,7 @@
 <div class="row">
   <div class="col-md-8 mx-auto">
     <h4 class="my-2">Регистрация нового пользователя</h4>
-    <form method="POST" action="">
+    <form method="POST" action="{% url 'accounts:success' %}">
         {% csrf_token %}
       <div class="form-group">
         {{ form.as_p }}

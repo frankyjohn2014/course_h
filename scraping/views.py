@@ -7,35 +7,7 @@ from django.views.generic.list import ListView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy,reverse
 from django.contrib import messages
-
-# def home_view(request):
-#     print(request.GET)
-#     form = FindForm()
-#     return render(request,'scraping/home.html', {'form':form})
-
-
-# def list_view(request):
-#     # print(request.GET)
-#     form = FindForm()
-#     category = request.GET.get('category')
-#     language = request.GET.get('language')
-#     page_obj = []
-#     context = {'category': category, 'language':language, 'form':form}
-
-#     if category or language:
-#         _filter = {}
-#         if category:
-#             _filter['category__slug'] = category
-#         if language:
-#             _filter['language__slug'] = language
-#         qs = Category.objects.filter(**_filter).select_related('category','language')
-
-#         paginator = Paginator(qs, 10) # Show 25 contacts per page.
-
-#         page_number = request.GET.get('page')
-#         page_obj = paginator.get_page(page_number)
-#         context['object_list'] = page_obj
-#     return render(request,'scraping/list.html', context)
+from django.db.models import Q
 
 
 class DView(DetailView):
@@ -67,26 +39,14 @@ class VList(ListView):
     #         qs = Category.objects.filter(**_filter).select_related('category','language')
     #     return qs
 
-# class VCreate(CreateView):
-#     model = Post
-#     # fields = '__all__'
-#     form_class = VForm
-#     template_name = 'scraping/create_view.html'
-#     success_url = reverse_lazy('home')
 
-# class VUpdate(UpdateView):
-#     model = Post
-#     # fields = '__all__'
-#     form_class = VForm
-#     template_name = 'scraping/create_view.html'
-#     success_url = reverse_lazy('home')
-
-# class VDelete(DeleteView):
-#     model = Post
-#     template_name = 'scraping/delete.html'
-#     success_url = reverse_lazy('home')
-
-#     # удаление без запроса подтверждения
-#     def get(self, request, *args,**kwargs):
-#         messages.success(request, 'Пост успешно удалён')
-#         return self.post(request,*args,**kwargs)
+class SearchResultsView(ListView):
+    model = Post
+    template_name = 'search_results.html'
+    # queryset = Post.objects.filter(title__icontains='Angular')
+    def get_queryset(self): # новый
+        query = self.request.GET.get('q')
+        object_list = Post.objects.filter(
+            Q(title__icontains=query) | Q(descr_post__icontains=query) | Q(desc_large__icontains=query)
+        )
+        return object_list
