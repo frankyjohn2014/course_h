@@ -11,6 +11,9 @@ import ast
 import csv
 from itertools import zip_longest
 
+
+
+
 def get_html(site):
 # https://curl.trillworks.com/
 
@@ -145,15 +148,16 @@ def main():
         clear_data2 = clear_data1.split(',')
         '''Вставить перебор для получения всех ссылок текущего урока'''
         count = 0
-        while True:
+        loop = 0
+        while loop < 4:
             try:
                 get_page_data(get_html(clear_data2[count]), count, clear_data2[count])
                 print(clear_data2[count])
                 count +=1
+                loop +=1
             except:
                 break
-
-        
+   
 if __name__ == '__main__':
     title_csv()
     main()
