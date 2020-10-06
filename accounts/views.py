@@ -103,11 +103,12 @@ def reg_email(request):
         contact_form = UserRegistrationForm(request.POST or None)
         if contact_form.is_valid():
             data = contact_form.cleaned_data
+            email = data.get('email')
             from_email = EMAIL_HOST_USER
             _html = '<h1>html</h1>'
-            to = 'ggg@pickybuys.com'
+            to = email
             messages.success(request,'Letter send to you email')
-            msg = EmailMultiAlternatives('sdsdsd', 'sdsds1111d', from_email, [to])
+            msg = EmailMultiAlternatives('Здравствуйте, вы успешно зарегестрированы на сайте recourse_hunter, ', 'Здравствуйте, вы успешно зарегестрированы на сайте recourse_hunter', from_email, [to])
             # msg.attach_alternative(_html, "text/html")
             msg.send()
             return redirect('accounts:success')

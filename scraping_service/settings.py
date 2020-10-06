@@ -38,13 +38,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sites',
-    'allauth',
-    'allauth.account',
-    'allauth.socialaccount',
-
-    # include the providers you want to enable:
-    'allauth.socialaccount.providers.google',
-    'allauth.socialaccount.providers.facebook',
     'accounts',
     'scraping',
     'import_export',
@@ -119,7 +112,7 @@ AUTHENTICATION_BACKENDS = (
     'allauth.account.auth_backends.AuthenticationBackend',
 )
 
-
+SITE_ID = 1
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
 
