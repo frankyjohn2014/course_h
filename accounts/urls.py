@@ -13,4 +13,5 @@ urlpatterns = [
     path('delete/', delete_view, name='delete'),
     path('contact/', contact, name='contact'),
     path('success/', reg_email, name='success'),
+
 ]

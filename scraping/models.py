@@ -42,7 +42,7 @@ class Language(models.Model):
 class Post(models.Model):
     title = models.CharField(max_length=250,verbose_name='Заголовок поста')
     descr_post =  models.CharField(max_length=500,verbose_name='Описание поста')
-    time_videos = models.CharField(max_length=250,verbose_name='Время видеоо')
+    time_videos = models.CharField(max_length=250,verbose_name='Время видео')
     quantity_videos = models.CharField(max_length=250,verbose_name='Количество видео')
     time_add = models.CharField(max_length=250,verbose_name='Время добавления')
     language_videos = models.CharField(max_length=250,verbose_name='Язык видео')
@@ -50,6 +50,10 @@ class Post(models.Model):
     timestamp = models.DateField(auto_now_add=True)
     desc_large = models.TextField(verbose_name='Большое описание')
     site = models.URLField(unique=True, blank=True, null=True)
+    downoad_material_href = models.URLField(unique=True, blank=True, null=True)
+    zip_files_href = models.URLField(unique=True, blank=True, null=True)
+    company_name = models.CharField(max_length=250,verbose_name='Компания')
+
     # url = models.URLField(unique=True)
     # company = models.CharField(max_length=250,verbose_name='Компания')
     # description = models.TextField(verbose_name='Описание курса')
