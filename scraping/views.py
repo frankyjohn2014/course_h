@@ -25,6 +25,9 @@ import csv
 from itertools import zip_longest
 import sys
 from .models import Post, Post_video
+from celery import shared_task
+from celery.task import periodic_task
+from celery.schedules import crontab
 
 class DView(DetailView):
     queryset = Post.objects.all()
@@ -33,27 +36,6 @@ class DView(DetailView):
 class VList(ListView):
     model = Post
     template_name = 'scraping/home.html'
-    # form = FindForm() 
-    # paginate_by = 6
-    # def get_context_data(self, **kwargs):
-    #     context = super().get_context_data(**kwargs)
-    #     context['category'] = self.request.GET.get('category')
-    #     context['language'] = self.request.GET.get('language')
-    #     context['form'] = self.form
-    #     return context
-    
-    # def get_queryset(self, **kwargs):
-    #     category = self.request.GET.get('category')
-    #     language = self.request.GET.get('language')
-    #     qs = []
-    #     if category or language:
-    #         _filter = {}
-    #         if category:
-    #             _filter['category__slug'] = category
-    #         if language:
-    #             _filter['language__slug'] = language
-    #         qs = Category.objects.filter(**_filter).select_related('category','language')
-    #     return qs
 
 
 class SearchResultsView(ListView):
@@ -68,12 +50,7 @@ class SearchResultsView(ListView):
         return object_list
 
 
-def save_data(request):
-    # file = open("csv/posts.csv", 'r', encoding="utf-8", newline='')  # Предположим это json
-    # # file.close()
-    # for row in file:
-    #     print(type(row))
-    #     # Post.objects.update_or_create(title=row['title'], image=row['image'], price=row['price']) 
+def save_data(request): 
     
     title = []
     descr_post = []
@@ -154,6 +131,7 @@ def save_data(request):
             break
 
     return HttpResponse('save')
+
 
 def Parse(request):
     def get_html(site, request):
@@ -319,6 +297,7 @@ def Parse(request):
             count = 0
             loop = 0
             while loop < 4:
+                print(loop)
                 get_page_data(get_html(clear_data2[count], request), count, clear_data2[count])
 
                 count +=1
