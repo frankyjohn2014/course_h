@@ -9,6 +9,7 @@ from django.urls import reverse_lazy,reverse
 from django.contrib import messages
 from django.db.models import Q
 from django.http import HttpResponse
+from django.shortcuts import get_object_or_404
 import json
 from bs4 import BeautifulSoup
 import requests
@@ -23,6 +24,7 @@ import ast
 import csv
 from itertools import zip_longest
 import sys
+from .models import Post, Post_video
 
 class DView(DetailView):
     queryset = Post.objects.all()
@@ -55,7 +57,6 @@ class VList(ListView):
 
 
 class SearchResultsView(ListView):
-    print('dfdfddfdfsdfsdfsdf', requests.get)
     model = Post
     template_name = 'search_results.html'
     # queryset = Post.objects.filter(title__icontains='Angular')
@@ -67,15 +68,94 @@ class SearchResultsView(ListView):
         return object_list
 
 
-def save_data(requests):
-    data = []
-    file = open("csv/links.csv", 'r')  # Предположим это json
-    return HttpResponse(file)
-    # file.close()
-    # for row in data:
-    #     Scratch.objects.update_or_create(title=row['title'], image=row['image'], price=row['price']) # Название модели и полей надеюсь вы сами подставите
+def save_data(request):
+    # file = open("csv/posts.csv", 'r', encoding="utf-8", newline='')  # Предположим это json
+    # # file.close()
+    # for row in file:
+    #     print(type(row))
+    #     # Post.objects.update_or_create(title=row['title'], image=row['image'], price=row['price']) 
+    
+    title = []
+    descr_post = []
+    time_videos = []
+    quantity_videos = []
+    time_add = []
+    language_videos = []
+    picture_post = []
+    desc_large = []
+    site = []
+    zip_files_href = []
+    download_material_href = []
+    company_name = []
 
-def Parse_and_save_todb(request):
+    title_links = []
+    videos = []
+    posts = []
+    with open("csv/posts.csv", 'r', encoding="utf-8") as f:
+        reader = csv.DictReader(f)
+        for row in reader:
+            title.append(row['title'])
+            descr_post.append(row['descr_post'])
+            time_videos.append(row['time_videos'])
+            quantity_videos.append(row['quantity_videos'])
+            time_add.append(row['time_add'])
+            language_videos.append(row['language_videos'])
+            picture_post.append(row['picture_post'])
+            desc_large.append(row['desc_large'])
+            site.append(row['site'])
+            download_material_href.append(row['download_material_href'])
+            zip_files_href.append(row['zip_files_href'])
+            company_name.append(row['company_name'])
+
+    with open("csv/links.csv", 'r', encoding="utf-8") as l:
+        reader1 = csv.DictReader(l)
+        for row1 in reader1:
+            title_links.append(row1['title'])
+            videos.append(row1['videos'])
+            posts.append(row1['posts'])
+
+
+
+    i = 0   
+    while True:
+        try:
+            Post.objects.get_or_create(
+                title=title[i],
+                descr_post=descr_post[i],
+                time_videos=time_videos[i],
+                quantity_videos=quantity_videos[i],
+                time_add=time_add[i],
+                language_videos=language_videos[i],
+                picture_post=picture_post[i],
+                desc_large=desc_large[i],
+                site=site[i],
+                download_material_href=download_material_href[i],
+                zip_files_href=zip_files_href[i],
+                company_name=company_name[i],
+                )
+ 
+            i +=1
+        except:
+            print('break from save posts')
+            break
+
+    d = 0
+    while True:
+        try:
+            Post_video.objects.get_or_create(
+                title = title_links[d],
+                videos = videos[d],
+                posts_id = posts[d]
+            )
+            
+            d +=1
+        except:
+            print('break from save links')
+            break
+
+    return HttpResponse('save')
+
+def Parse(request):
     def get_html(site, request):
     # https://curl.trillworks.com/
 
@@ -114,11 +194,13 @@ def Parse_and_save_todb(request):
         picture_post_m = []
         desc_large_m = []
         site_m = []
-        downoad_material_href_m = []
+        download_material_href_m = []
         zip_files_href_m = []
         company_name_m = []
+
         soup = BeautifulSoup(html, 'lxml') #(format_in, parser)
         script = soup.find_all('script')[2]
+
         '''Парсим наименования поста'''
         name_post = soup.find('p',class_='hero-description').text
         descr_post = soup.find('div',class_='course-description').text
@@ -131,10 +213,20 @@ def Parse_and_save_todb(request):
         download_link_block = soup.find('div', class_='course-wrap-bottom')
         download_link_a = download_link_block.find_all('a')
         downoad_material = download_link_a[0]
-        zip_files = download_link_a[1]
+        try:
+            zip_files = download_link_a[1]
+        except:
+            zip_files = ''
 
-        downoad_material_href = downoad_material['href']
-        zip_files_href = zip_files['href']
+        try:
+            download_material_href = downoad_material['href']
+        except:
+            download_material_href = ''
+        try:
+            zip_files_href = zip_files['href']
+        except:
+            zip_files_href = ''
+
         company_name = soup.find('a',class_='course-box-value').text
         '''Сохраняем в словарь'''
         name_post_m.append(name_post)
@@ -146,11 +238,11 @@ def Parse_and_save_todb(request):
         picture_post_m.append(picture_post)
         desc_large_m.append(desc_large)
         site_m.append(site)
-        downoad_material_href_m.append(downoad_material_href)
+        download_material_href_m.append(download_material_href)
         zip_files_href_m.append(zip_files_href)
         company_name_m.append(company_name)
 
-        d = [name_post_m, descr_post_m, time_videos_m, quantity_videos_m, time_add_m, language_videos_m, picture_post_m,desc_large_m,site_m,downoad_material_href_m,zip_files_href_m,company_name_m]
+        d = [name_post_m, descr_post_m, time_videos_m, quantity_videos_m, time_add_m, language_videos_m, picture_post_m,desc_large_m,site_m,download_material_href_m,zip_files_href_m,company_name_m]
         export_data = zip_longest(*d, fillvalue = '')
         '''Делаем запись модели Пост для экспорта'''
         with open('csv/posts.csv', 'a+', encoding="utf-8", newline='') as myfile:
@@ -209,7 +301,7 @@ def Parse_and_save_todb(request):
         '''Создаём заголовки в csv'''
         with open('csv/posts.csv', 'w+', encoding="utf-8", newline='') as myfile:
             wr = csv.writer(myfile)
-            wr.writerow(("title", "descr_post", "time_videos","quantity_videos", "time_add", "language_videos", "picture_post","desc_large","site","downoad_material_href","zip_files_href","company_name"))
+            wr.writerow(("title", "descr_post", "time_videos","quantity_videos", "time_add", "language_videos", "picture_post","desc_large","site","download_material_href","zip_files_href","company_name"))
             myfile.close()
         with open('csv/links.csv', 'w+', encoding="utf-8", newline='') as myfile:
             wr = csv.writer(myfile)
@@ -226,7 +318,7 @@ def Parse_and_save_todb(request):
             '''Вставить перебор для получения всех ссылок текущего урока'''
             count = 0
             loop = 0
-            while loop < 1:
+            while loop < 4:
                 get_page_data(get_html(clear_data2[count], request), count, clear_data2[count])
 
                 count +=1

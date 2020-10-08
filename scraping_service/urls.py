@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path,include
-from scraping.views import VList,DView,SearchResultsView,save_data,Parse_and_save_todb
+from scraping.views import VList,DView,SearchResultsView,save_data,Parse,save_data
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -23,7 +23,8 @@ urlpatterns = [
     path('accounts/',include('accounts.urls'), name='accounts'),
     path('detail/<int:pk>/', DView.as_view(), name='detail'),
     path('search/', SearchResultsView.as_view(), name='search_results'),
-    path('save/', Parse_and_save_todb, name='save'),
+    path('parse/', Parse, name='parse'),
+    path('save/',save_data, name='save_data'),
     # path('create/', VCreate.as_view(), name='create'),
     # path('update/<int:pk>', VUpdate.as_view(), name='update'),
     # path('delete/<int:pk>', VDelete.as_view(), name='delete'),
