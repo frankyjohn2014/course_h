@@ -50,7 +50,7 @@ class Post(models.Model):
     timestamp = models.DateField(auto_now_add=True)
     desc_large = models.TextField(verbose_name='Большое описание')
     site = models.URLField(unique=True, blank=True, null=True)
-    downoad_material_href = models.URLField(unique=True, blank=True, null=True)
+    download_material_href = models.URLField(unique=True, blank=True, null=True)
     zip_files_href = models.URLField(unique=True, blank=True, null=True)
     company_name = models.CharField(max_length=250,verbose_name='Компания')
 
